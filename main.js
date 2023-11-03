@@ -41,6 +41,4 @@ async function getWebsiteData() {
 
 }
 
-getWebsiteData().then();
-
 
