@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function App() {
 
+  const [isFailed, setIsFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async(event) => {
@@ -30,8 +31,14 @@ function App() {
 
     } catch (error) {
       console.error('Error fetching website data:', error);
+      setIsFailed(true);
+
     } finally {
         setIsLoading(false);  // set isLoading back to false at the end of the function, whether or not the fetch succeeded
+        if (!isFailed) {
+          // Redirect to analytics dashboard
+        }
+
     }
     
   }
