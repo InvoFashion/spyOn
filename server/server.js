@@ -1,20 +1,28 @@
 // server/server.js
 const express = require('express');
+const cors = require('cors');
+const { getWebsiteData } = require('./main');
+
 const app = express();
+app.use(cors());
 
-function getWebsiteData(url) {
-    // ... your function implementation ...
-    return { data: '...data from website...' };
-}
+app.get('/api/test', (req, res) => {
 
-app.get('/api/getWebsiteData', (req, res) => {
+})
+
+app.get('/api/getWebsiteData', async(req, res) => {
+
+    console.log('im here');
     const url = req.query.url;
+    console.log('Received url - ', url);
     if (!url) {
         return res.status(400).send('URL is required');
     }
-    const data = getWebsiteData(url);
+    const data = await getWebsiteData(url);
     res.json(data);
 });
+
+
 
 app.listen(5000, () => {
     console.log('Server is running on http://localhost:5000');
