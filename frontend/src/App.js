@@ -1,6 +1,7 @@
 import './App.css';
-import './components.css';
+import './buttons.css';
 import { useState, useEffect } from "react";
+import BarChartComponent from './dashboard-component';
 
 
 function App() {
@@ -10,9 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isFailed) {
-      // Redirect to analytics dashboard  
-    } else {
+    if (isFailed)  {
       SetShowFailedAlert(true);
     }
   },[isFailed]);
@@ -35,6 +34,7 @@ function App() {
       }
     const data = await response.json();
     console.log('data - ', data);
+    console.log('Direct!');
 
     } catch (error) {
       console.error('Error fetching website data:', error);
@@ -50,7 +50,7 @@ function App() {
   return (
     <>
       {showFailedAlert &&
-      <div className="alert alert-danger alert-dismissible custom-alert">
+      <div className="alert alert-danger alert-dismissible custom-alert fade in show">
         {/* <a href="/#" className="close" data-dismiss="alert" aria-label="close">&times;</a> */}
         <button type="button" className="close" data-dismiss="alert" aria-label="close" onClick={() => SetShowFailedAlert(false)}>&times;</button>
         <strong>Oops!</strong> Something went wrong... Try again later!
@@ -102,7 +102,7 @@ function App() {
                                       </div>
                                       {isLoading ? (
 
-                                        <button type="submit" disabled={true}>
+                                        <button type="submit" className='analyze-button' disabled={true}>
                                           <div className="svg-wrapper-1">
                                             <div className="svg-wrapper">
                                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -112,7 +112,7 @@ function App() {
                                         </button>
                                       
                                       ) : (
-                                        <button type="submit">
+                                        <button type="submit" className='analyze-button'>
                                           <div className="svg-wrapper-1">
                                             <div className="svg-wrapper">
                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -149,6 +149,7 @@ function App() {
                           <div className="col-xxl-8">
                               <div className="text-center my-5">
                                   <h2 className="display-5 fw-bolder"><span className="text-gradient d-inline">About Me</span></h2>
+                                  <BarChartComponent />
                                   <p className="lead fw-light mb-4">My name is Start Bootstrap and I help brands grow.</p>
                                   <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit dolorum itaque qui unde quisquam consequatur autem. Eveniet quasi nobis aliquid cumque officiis sed rem iure ipsa! Praesentium ratione atque dolorem?</p>
                                   <div className="d-flex justify-content-center fs-2 gap-4">

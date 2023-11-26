@@ -7,12 +7,11 @@ const app = express();
 app.use(cors());
 
 app.get('/api/test', (req, res) => {
-    
+
 })
 
 app.get('/api/getWebsiteData', async(req, res) => {
 
-    console.log('im here');
     const url = req.query.url;
     console.log('Received url - ', url);
     if (!url) {
