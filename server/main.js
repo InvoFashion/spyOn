@@ -3,8 +3,9 @@ const { fetchHTML } = require('./website');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const prompt = require("prompt-sync")({ sigint: true });
-const { spellCheck } = require('./spell-check');
-const { aggregateTextForSpellCheck, extractTagsFromHTML } = require('./functions');
+const { spellCheck } = require('./tests/spell-check');
+const { getPageSpeed } = require('./tests/speed-test')
+const { extractTagsFromHTML } = require('./functions');
 
 
 
@@ -25,6 +26,9 @@ async function getWebsiteData(url) {
 
     // Send data to a spell check
     spellCheck(htmlTags);
+
+    // Get PageSpeed
+    //getPageSpeed(url);
 
     //spellCheck();
     return htmlTags;
