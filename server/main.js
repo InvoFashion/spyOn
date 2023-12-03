@@ -25,10 +25,10 @@ async function getWebsiteData(url) {
     htmlTags = extractTagsFromHTML($, htmlTags);
 
     // Send data to a spell check
-    spellCheck(htmlTags);
+    //spellCheck(htmlTags);
 
     // Get PageSpeed
-    //getPageSpeed(url);
+    getPageSpeed(url);
 
     //spellCheck();
     return htmlTags;

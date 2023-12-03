@@ -5,7 +5,7 @@ function getPageSpeed(url) {
     const apiKey = process.env.PAGE_SPEED;
     const categories = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&category=${categories.join('&category=')}`;
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=desktop&key=${apiKey}&category=${categories.join('&category=')}`;
     
     fetch(apiUrl)
         .then(response => response.json())
@@ -49,6 +49,26 @@ function extractPageSpeedData(data) {
       if (score >= 50) return "AVERAGE";
       return "SLOW";
     };
+
+      // Function to extract a specific metric
+    const extractMetric = (auditId) => {
+        const audit = audits[auditId];
+        return audit ? {
+        title: audit.title,
+        value: audit.displayValue,
+        score: Math.round(audit.score * 100),
+        classification: classifyScore(Math.round(audit.score * 100))
+        } : null;
+    };
+
+      // Extract metrics
+    const metrics = {
+        speedIndex: extractMetric('speed-index'),
+        firstContentfulPaint: extractMetric('first-contentful-paint'),
+        largestContentfulPaint: extractMetric('largest-contentful-paint')
+        // Add other metrics as needed
+    };
+
   
     // Function to extract relevant insights
     const extractInsights = (auditRefs, types) => {
@@ -60,7 +80,7 @@ function extractPageSpeedData(data) {
             id: ref.id,
             title: audit.title,
             description: audit.description,
-            score: audit.score * 100,
+            score: audit.score !== undefined ? Math.round(audit.score * 100) : null,
             details: audit.details
           };
         });
@@ -82,21 +102,20 @@ function extractPageSpeedData(data) {
     const bestPracticesData = getCategoryData('best-practices');
     const accessibilityData = getCategoryData('accessibility');
     const performanceData = getCategoryData('performance');
-  
-    // Responsive (viewport) audit data
     const responsive = audits.viewport ? {
-      score: audits.viewport.score * 100,
-      classification: classifyScore(audits.viewport.score * 100),
-      description: audits.viewport.description
+        score: audits.viewport.score * 100,
+        classification: classifyScore(audits.viewport.score * 100),
+        description: audits.viewport.description
     } : null;
-  
-    // Return extracted data
+
+    // Return extracted data including metrics
     return {
-      seo: seoData,
-      bestPractices: bestPracticesData,
-      accessibility: accessibilityData,
-      performance: performanceData,
-      responsive
+        seo: seoData,
+        bestPractices: bestPracticesData,
+        accessibility: accessibilityData,
+        performance: performanceData,
+        responsive,
+        metrics
     };
   }
   
