@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { aggregateTextForSpellCheck, extractAndCleanEnglishText, excludeWords } = require('../functions');
+const { aggregateTextForSpellCheck, extractAndCleanEnglishText } = require('./js/testsFunctions');
 
 
 const apiKey = process.env.BING_API_KEY;
@@ -9,12 +9,14 @@ function spellCheck(htmlTags) {
 
     // Convert data to string 
     let textToCheck = aggregateTextForSpellCheck(htmlTags);
-    //let excludeWordArray = excludeWords(htmlTags);
-    let englishParts = extractAndCleanEnglishText(textToCheck, ['InvoFashion']);
+
+
+    let excludeWordArray = excludeWords(htmlTags);
+    let englishParts = extractAndCleanEnglishText(textToCheck, excludeWordArray);
     console.log('-------------');
     console.log(englishParts);
     console.log('-------------');
-    // Send data via API request
+    //Send data via API request
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Ocp-Apim-Subscription-Key': apiKey

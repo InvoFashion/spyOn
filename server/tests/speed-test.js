@@ -1,5 +1,44 @@
 
+const cheerio = require('cheerio');
+const { getPercentage } = require('./js/testsFunctions');
 
+// Return the <image> and <video> tags without alt
+function findTagsWithoutAlt(htmlString) {
+  const $ = cheerio.load(htmlString);
+  const imgAndVideoTags = $('img, video');
+  const tagsWithoutAlt = [];
+  let totalTagsCount = 0;
+
+  imgAndVideoTags.each(function () {
+      totalTagsCount++;
+      const tag = $(this);
+      const alt = tag.attr('alt');
+      const src = tag.attr('src') || tag.attr('poster'); // Get 'src' for images or 'poster' for videos
+
+      if (typeof alt === 'undefined' || alt.trim() === '') {
+          tagsWithoutAlt.push({ html: $.html(tag), src });
+      }
+  });
+
+
+  const tagsWithAlt = totalTagsCount - tagsWithoutAlt.length;
+  const tagsPercentage = getPercentage(tagsWithAlt, totalTagsCount);
+
+  const tagsInfo = {
+    totalTags: totalTagsCount,
+    tagsWithoutAltCount: tagsWithoutAlt.length,
+    tagsWithAlt: tagsWithAlt,
+    tagsPercentage: tagsPercentage
+  }
+
+  return {
+      tagsInfo: tagsInfo,
+      tags: tagsWithoutAlt
+  };
+}
+
+
+// Returns several page info metrics
 function getPageSpeed(url) {
 
     const apiKey = process.env.PAGE_SPEED;
@@ -127,7 +166,8 @@ function extractPageSpeedData(data) {
 
 
 module.exports = {
-    getPageSpeed
+    getPageSpeed,
+    findTagsWithoutAlt
 }
 
     
