@@ -1,4 +1,6 @@
 const cheerio = require('cheerio');
+const { JSDOM } = require('jsdom');
+const fetch = require('node-fetch');
 
 async function fetcImagesFromHTML(url) {
     try {
@@ -50,39 +52,76 @@ async function fetcImagesFromHTML(url) {
 
 // Function to fetch the HTML content of a specified URL
 async function fetchHTML(url) {
-    if( !url.includes('https://') ) {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = `https://${url}`;
     }
     try {
-        // Send a GET request to the specified URL
         const response = await fetch(url);
-        
-        // Check if the request was successful
         if (response.ok) {
-            // Parse the response as text
             const htmlText = await response.text();
-            
-            // Log the HTML text to the console (for debugging purposes)
-            //console.log(htmlText);
-            
-            // TODO: Analyze the HTML text with your AI
-            // ...
             return htmlText;
         } else {
-            console.error('Failed to fetch the HTML content:', response.statusText);
+            throw new Error(`Failed to fetch HTML: ${response.statusText}`);
         }
-    
     } catch (error) {
-        console.error('An error occurred while fetching the HTML content:', error);
+        throw new Error(`Error fetching HTML: ${error.message}`);
     }
 }
+
+// Function to extract CSS URLs from HTML
+function extractCSSUrls(html) {
+    try {
+        const dom = new JSDOM(html);
+        const links = [...dom.window.document.querySelectorAll('link[rel="stylesheet"]')];
+        return links.map(link => link.href);
+    } catch (error) {
+        throw new Error(`Error extracting CSS URLs: ${error.message}`);
+    }
+}
+
+// Function to fetch CSS files
+async function fetchCSSFiles(urls) {
+    try {
+        const cssPromises = urls.map(async (url) => {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    return await response.text();
+                } else {
+                    throw new Error(`Failed to fetch CSS: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching CSS file from ${url}: ${error.message}`);
+                return ''; // Return empty string for failed fetches to avoid disrupting the array structure
+            }
+        });
+
+        return Promise.all(cssPromises);
+    } catch (error) {
+        throw new Error(`Error fetching CSS files: ${error.message}`);
+    }
+}
+
+
+// Example usage
+// async function analyzeWebsite(url) {
+//     const html = await fetchHTML(url);
+//     const cssUrls = extractCSSUrls(html);
+//     const cssFiles = await fetchCSSFiles(cssUrls);
+//     console.log(cssFiles); // Here you'll have the content of each CSS file
+// }
+
+
+
 
 // Example usage: Fetch the HTML content of invofashion.com
 //fetchHTML('https://invofashion.com');
 
 
 module.exports = {
-    fetchHTML
+    fetchHTML,
+    extractCSSUrls,
+    fetchCSSFiles
 }
 
 

@@ -55,12 +55,6 @@ function identifyChatbot(html, platform) {
     return chatbotInfo;
 }
 
-// Example usage
-const htmlContent = "Example HTML content here";
-const platform = "Wix"; // Example platform
-const chatbot = identifyChatbot(htmlContent, platform);
-console.log(chatbot);
-
 
 module.exports = {
     identifyChatbot

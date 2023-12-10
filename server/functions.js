@@ -30,9 +30,16 @@ function extractTagsFromHTML($, htmlTags) {
 }
 
 
+// Function to fetch HTML
+
+
+
+
+
+
+
 
 module.exports = {
     extractTagsFromHTML,
     excludeWords
-    
 }

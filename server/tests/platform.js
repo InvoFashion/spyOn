@@ -41,7 +41,7 @@ function identifyPlatform(html) {
         }
     }
 
-    return "Unknown Platform";
+    return "Unknown";
 }
 
 
