@@ -45,7 +45,6 @@ function getPageSpeed(url) {
     const categories = ['performance', 'accessibility', 'best-practices', 'seo'];
 
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=desktop&key=${apiKey}&category=${categories.join('&category=')}`;
-    
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {

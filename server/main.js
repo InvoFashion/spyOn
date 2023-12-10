@@ -28,17 +28,16 @@ async function getWebsiteData(url) {
         //spellCheck(htmlTags);
     
         // Get PageSpeed
-        //getPageSpeed(url);
+        // const data = await getPageSpeed(url);
+        // console.log(data);
     
         // Checks the website's platform (Wix, Shopify etc...)
-        const platform = await identifyPlatform(htmlText);
-        console.log(platform);
+        // const platform = await identifyPlatform(htmlText);
+        // console.log(platform);
 
         const tags = await findTagsWithoutAlt(htmlText);
         console.log('--------- ALL TAGS ---------');
         console.log(tags);
-        // console.log('--------- TAGS WITHOUT HTML ---------');
-        // console.log(tags.tagsWithoutAlt);
 
     
         // Checks for the existance of a ChatBot

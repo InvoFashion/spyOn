@@ -56,10 +56,10 @@ function identifyChatbot(html, platform) {
 }
 
 // Example usage
-const htmlContent = "Example HTML content here";
-const platform = "Wix"; // Example platform
-const chatbot = identifyChatbot(htmlContent, platform);
-console.log(chatbot);
+// const htmlContent = "Example HTML content here";
+// const platform = "Wix"; // Example platform
+// const chatbot = identifyChatbot(htmlContent, platform);
+// console.log(chatbot);
 
 
 module.exports = {
