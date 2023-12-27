@@ -1,7 +1,9 @@
+import SalesPeopleTable from '../components/dataTable';
 import React from 'react';
 
       import {
         Card,
+        Metric,
         Grid,
         Tab,
         TabGroup,
@@ -26,10 +28,10 @@ function DashboardGrid() {
         <TabPanels>
           <TabPanel>
             <Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
-              <Card>
-                {/* Placeholder to set height */}
-                <div className="h-28" />
-              </Card>
+            <Card className="max-w-xs mx-auto" decoration="top" decorationColor="indigo">
+              <Title>Sales</Title>
+              <Metric>$ 34,743</Metric>
+            </Card>
               <Card>
                 {/* Placeholder to set height */}
                 <div className="h-28" />
@@ -48,7 +50,7 @@ function DashboardGrid() {
           <TabPanel>
             <div className="mt-6">
               <Card>
-                <div className="h-96" />
+                <SalesPeopleTable></SalesPeopleTable>
               </Card>
             </div>
           </TabPanel>
